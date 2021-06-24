@@ -29,7 +29,11 @@ public class Photo {
     @Column
     private String uploadPath;
 
+    @Column(name = "product_id")
+    private Long productId;
+
     @ManyToOne()
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
 
 }

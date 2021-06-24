@@ -20,8 +20,11 @@ public class Detail {
     @Column(name = "product_id")
     private Long productId;
 
+    @Column(name = "order_id")
+    private Long orderId;
+
     @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Order order;
 
     @ManyToOne()

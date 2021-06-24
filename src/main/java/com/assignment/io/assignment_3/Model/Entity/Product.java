@@ -25,6 +25,9 @@ public class Product {
     @Column
     private double price;
 
+    @Column(name = "category_id")
+    private Long categoryId;
+
     @OneToMany(mappedBy = "product")
     private List<Photo> photos;
 
@@ -35,7 +38,7 @@ public class Product {
 
     @JsonIgnore
     @ManyToOne()
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JoinColumn(name = "category_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Category category;
 
 }

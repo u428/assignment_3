@@ -20,8 +20,11 @@ public class Order {
     @Column
     private Date date;
 
+    @Column(name = "customer_id")
+    private Long customerId;
+
     @ManyToOne()
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Customer customer;
 
     @OneToOne(mappedBy = "order")

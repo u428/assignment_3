@@ -21,8 +21,11 @@ public class Payment {
     @Column
     private int amount;
 
+    @Column(name = "invoice_id")
+    private Long invoiceId;
+
     @ManyToOne()
-    @JoinColumn(name = "invoice_id", referencedColumnName = "id")
+    @JoinColumn(name = "invoice_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Invoice invoice;
 
 }
