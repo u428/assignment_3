@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "detail")
+@Table(name = "details")
 public class Detail {
 
     @Id
@@ -17,12 +17,15 @@ public class Detail {
     @Column
     private short quantity;
 
+    @Column(name = "product_id")
+    private Long productId;
+
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @ManyToOne()
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
 
 }

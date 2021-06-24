@@ -35,7 +35,7 @@ public class Product {
 
     @JsonIgnore
     @ManyToOne()
-    @JoinColumn(name = "category_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
 }

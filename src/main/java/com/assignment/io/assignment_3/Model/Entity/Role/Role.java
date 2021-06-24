@@ -14,17 +14,17 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false, name = "role_name", unique = true)
-    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "role_name")
     private String roleName;
 
     @OneToOne(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private List<Customer> customer;
+    private Customer customer;
 
     @OneToMany(mappedBy = "role")
     private List<Priviliges> priviliges;
+
+
 
 }

@@ -20,7 +20,11 @@ public class Priviliges {
     @Column()
     private String name;
 
-    @ManyToOne()
+    @Column(name = "role_id")
+    private Long roleId;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Role role;
 
     public Priviliges() {
