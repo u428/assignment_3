@@ -36,7 +36,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             CustomerLogin creds=new ObjectMapper().readValue(request.getInputStream(), CustomerLogin.class);
 
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                creds.getTel(),
+                creds.getPhoto(),
                 creds.getPassword(),
                 new ArrayList<SimpleGrantedAuthority>())
             );

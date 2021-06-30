@@ -1,6 +1,7 @@
 package com.assignment.io.assignment_3.Model.Entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,6 +20,7 @@ public class Invoice {
     private double amount;
 
     @Temporal(TemporalType.DATE)
+    @CreatedDate
     @Column
     private Date issued;
 

@@ -15,4 +15,6 @@ public interface OtherService {
     ResponseEntity customOrder(List<OrderDTO> orderDTOList, Customer customer);
 
     ResponseEntity sortProductByCategory(Long id);
+
+    ResponseEntity karzinka(OrderDTO orderDTO, Customer customer);
 }

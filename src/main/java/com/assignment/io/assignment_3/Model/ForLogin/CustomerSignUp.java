@@ -11,15 +11,18 @@ public class CustomerSignUp {
     @NotNull
     @NotEmpty
     public String name;
+
     @NotNull
     @NotEmpty
-    public Character country;
+    public String country;
+
     @NotNull
     @NotEmpty
     public String address;
+
     @NotNull
-    @NotEmpty
-    public int phone;
+    public Integer phone;
+
     @NotNull
     @NotEmpty
     public String password;

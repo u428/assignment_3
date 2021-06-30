@@ -20,6 +20,7 @@ public class AuthController {
     @PostMapping(path = "/signUp")
     public ResponseEntity signUp(@Valid @RequestBody CustomerSignUp customerSignUp, BindingResult bindingResult){
         if (bindingResult.hasErrors()) return null;
+        System.out.println(customerSignUp.getPhone());
         return customerService.signUp(customerSignUp);
     }
 

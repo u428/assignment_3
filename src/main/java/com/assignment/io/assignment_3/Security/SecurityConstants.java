@@ -10,6 +10,6 @@ public class SecurityConstants {
     public static final String HEADER_STRING="Authorization";
     public static final String SIGN_UP_URL="/auth/signUp";
 
-    @Value("${token.secret}")
-    public static String TOKEN_SECRET;
+//    @Value("${token.secret}")
+    public static String TOKEN_SECRET="QurbanovUlugbek428@gmail.com";
 }

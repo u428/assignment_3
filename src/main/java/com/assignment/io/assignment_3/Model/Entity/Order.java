@@ -1,7 +1,9 @@
 package com.assignment.io.assignment_3.Model.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,19 +19,20 @@ public class Order {
     private Long id;
 
     @Temporal(TemporalType.DATE)
+    @CreatedDate
     @Column
     private Date date;
 
-    @Column(name = "customer_id")
-    private Long customerId;
-
-    @ManyToOne()
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonIgnore
+    @OneToOne()
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "order")
     private Invoice invoice;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "order")
     private List<Detail> details;
 

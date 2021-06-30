@@ -22,4 +22,12 @@ public enum ApplicationUserRole {
         return permissions;
     }
 
+
+    public Set<String> getGrantedAuthorities() {
+        Set<String> permissions = getPermissions().stream()
+                .map(permission ->permission.getPermission())
+                .collect(Collectors.toSet());
+        return permissions;
+    }
+
 }

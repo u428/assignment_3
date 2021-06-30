@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping(path = "/admin")
@@ -27,8 +28,13 @@ public class AdminController {
 
     @PostMapping(path = "/setProduct",
             consumes = {"multipart/form-data", "application/json"})
-    public ResponseEntity setProduct(@RequestBody SetProductDto setProductDto){
+    public ResponseEntity setProduct(@ModelAttribute SetProductDto setProductDto) throws IOException {
         return adminService.setProduct(setProductDto);
+    }
+
+    @PostMapping(path = "/addCategort")
+    public ResponseEntity addCategort(@RequestParam String categoryName){
+        return adminService.addCategort(categoryName);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.assignment.io.assignment_3.Security;
 
+import com.assignment.io.assignment_3.Config.Depend.ApplicationUserRole;
 import com.assignment.io.assignment_3.Service.CustomerService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -39,7 +40,7 @@ public class WbSecurity extends WebSecurityConfigurerAdapter {
 
                .antMatchers(HttpMethod.GET, "/auth/checkTelNomer")
                .permitAll()
-
+                .antMatchers("/admin/**").hasRole(ApplicationUserRole.ADMIN.name())
 //               .antMatchers( "/users/**").hasRole(ApplicationUserRole.USER.name())
 
                .anyRequest()

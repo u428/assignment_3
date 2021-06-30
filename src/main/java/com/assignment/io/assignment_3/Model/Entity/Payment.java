@@ -1,6 +1,7 @@
 package com.assignment.io.assignment_3.Model.Entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,6 +16,7 @@ public class Payment {
     private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
     @Column
     private Date time;
 

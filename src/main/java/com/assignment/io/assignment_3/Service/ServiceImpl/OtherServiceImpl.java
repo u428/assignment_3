@@ -74,4 +74,15 @@ public class OtherServiceImpl implements OtherService {
     public ResponseEntity sortProductByCategory(Long id) {
         return null;
     }
+
+    @Override
+    public ResponseEntity karzinka(OrderDTO orderDTO, Customer customer) {
+       Detail detail=new Detail();
+//       productRepository.findById(orderDTO.getProduct_id());
+       detail.setQuantity(orderDTO.getProduct_quantity());
+       detail.setProductId(orderDTO.getProduct_id());
+       detail.setOrderId(customer.getOrder().getId());
+       detailRepository.save(detail);
+       return ResponseEntity.ok(detail);
+    }
 }

@@ -15,6 +15,8 @@ public class SetProductDto {
 
     private double price;
 
+    private Long categoryId;
+
     private List<MultipartFile> files;
 
 }

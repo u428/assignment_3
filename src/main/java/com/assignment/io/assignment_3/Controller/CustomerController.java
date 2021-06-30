@@ -5,6 +5,7 @@ import com.assignment.io.assignment_3.Model.Entity.Customer;
 import com.assignment.io.assignment_3.Model.Entity.Product;
 import com.assignment.io.assignment_3.Security.CurrentUser;
 import com.assignment.io.assignment_3.Service.OtherService;
+import org.checkerframework.checker.units.qual.Current;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,11 @@ public class CustomerController {
     @GetMapping(path = "/sortProductByCategory/{id}")
     public ResponseEntity sortProductByCategory(@PathVariable Long id){
         return otherService.sortProductByCategory(id);
+    }
+
+    @PostMapping(path = "/karzinka")
+    public ResponseEntity karzinka(@RequestBody OrderDTO orderDTO, @CurrentUser Customer customer){
+        return otherService.karzinka(orderDTO, customer);
     }
 
 }

@@ -2,6 +2,7 @@ package com.assignment.io.assignment_3.Model.Entity;
 
 
 import com.assignment.io.assignment_3.Model.Entity.Role.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,26 +17,29 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String name;
 
     @Column()
-    private Character country;
+    private String country;
 
     @Column()
     private String address;
 
-    @Column(length = 9, unique = true)
-    private int phone;
+    @Column(length = 9, unique = true, nullable = false)
+    private Integer phone;
 
-    @Column()
+    @JsonIgnore
+    @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Order> order;
 
+    @OneToOne(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Order order;
+
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
 }

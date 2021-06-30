@@ -19,11 +19,11 @@ public class Role {
     @Column(nullable = false, name = "role_name")
     private String roleName;
 
-    @OneToOne(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @OneToOne(mappedBy = "role",cascade = CascadeType.ALL)
     private Customer customer;
 
     @OneToMany(mappedBy = "role")
-    private List<Priviliges> priviliges;
+    private Set<Priviliges> priviliges;
 
 
 
