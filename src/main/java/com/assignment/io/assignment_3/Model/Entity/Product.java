@@ -29,7 +29,7 @@ public class Product {
 
     @Temporal(TemporalType.DATE)
     @CreatedDate
-    private Date createdAt;
+    private Date createdDate;
 
     @Column(name = "category_id")
     private Long categoryId;

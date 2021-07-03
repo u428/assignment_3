@@ -16,5 +16,7 @@ public interface OtherService {
 
     ResponseEntity sortProductByCategory(Long id);
 
-    ResponseEntity karzinka(OrderDTO orderDTO, Customer customer);
+    ResponseEntity karzinka(OrderDTO orderDTO, String customer);
+
+    ResponseEntity getKarzinka(String telNomer);
 }

@@ -2,10 +2,7 @@ package com.assignment.io.assignment_3.Service.ServiceImpl;
 
 import com.assignment.io.assignment_3.Model.DTO.OrderDTO;
 import com.assignment.io.assignment_3.Model.Entity.*;
-import com.assignment.io.assignment_3.Repository.DetailRepository;
-import com.assignment.io.assignment_3.Repository.InvoiceRepository;
-import com.assignment.io.assignment_3.Repository.OrderRepository;
-import com.assignment.io.assignment_3.Repository.ProductRepository;
+import com.assignment.io.assignment_3.Repository.*;
 import com.assignment.io.assignment_3.Service.OtherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +20,9 @@ public class OtherServiceImpl implements OtherService {
     private ProductRepository productRepository;
 
     @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private OrderRepository orderRepository;
 
     @Autowired
@@ -34,6 +34,7 @@ public class OtherServiceImpl implements OtherService {
 
     @Override
     public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> productList=productRepository.findAll();
         return ResponseEntity.ok(productRepository.findAll());
     }
 
@@ -76,13 +77,23 @@ public class OtherServiceImpl implements OtherService {
     }
 
     @Override
-    public ResponseEntity karzinka(OrderDTO orderDTO, Customer customer) {
+    public ResponseEntity karzinka(OrderDTO orderDTO, String id) {
        Detail detail=new Detail();
 //       productRepository.findById(orderDTO.getProduct_id());
        detail.setQuantity(orderDTO.getProduct_quantity());
        detail.setProductId(orderDTO.getProduct_id());
-       detail.setOrderId(customer.getOrder().getId());
+       detail.setOrderId(findByPhoneNumber(id));
        detailRepository.save(detail);
        return ResponseEntity.ok(detail);
+    }
+
+    @Override
+    public ResponseEntity getKarzinka(String telNomer) {
+        Order order=orderRepository.findById(findByPhoneNumber(telNomer)).get();
+        return ResponseEntity.ok(order);
+    }
+
+    private Long findByPhoneNumber(String phone){
+        return customerRepository.findCustomerByPhone(Integer.parseInt(phone)).getId();
     }
 }

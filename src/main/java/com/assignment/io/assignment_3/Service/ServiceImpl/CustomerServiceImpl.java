@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,12 +43,14 @@ public class CustomerServiceImpl implements CustomerService {
         customer=new Customer();
         BeanUtils.copyProperties(customerSignUp, customer);
         customer.setPassword(encoder.encode(customerSignUp.getPassword()));
-        customer.setOrder(new Order());
+        Order order=new Order();
+        order.setDate(new Date());
+        customer.setOrder(order);
         Role role= new Role();
-        role.setRoleName(ApplicationUserRole.ADMIN.name());
+        role.setRoleName(ApplicationUserRole.USER.name());
         Set<Priviliges> set=new HashSet<>();
         roleRepository.save(role);
-        for (String string: ApplicationUserRole.ADMIN.getGrantedAuthorities()){
+        for (String string: ApplicationUserRole.USER.getGrantedAuthorities()){
             Priviliges priviliges=new Priviliges();
             priviliges.setName(string);
             priviliges.setRoleId(role.getId());
@@ -65,6 +68,11 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer=findByPhoneNumber(tel);
         if (customer == null) return ResponseEntity.ok(1);
         return ResponseEntity.ok(0);
+    }
+
+    @Override
+    public ResponseEntity getCurrentCustomer(String telNomer) {
+        return ResponseEntity.ok(findByPhoneNumber(Integer.parseInt(telNomer)));
     }
 
     @Override

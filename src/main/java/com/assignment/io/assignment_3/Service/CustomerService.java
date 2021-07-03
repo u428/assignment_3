@@ -8,4 +8,6 @@ public interface CustomerService extends UserDetailsService {
     ResponseEntity signUp(CustomerSignUp customerSignUp);
 
     ResponseEntity checkTelNomer(int tel);
+
+    ResponseEntity getCurrentCustomer(String telNomer);
 }
