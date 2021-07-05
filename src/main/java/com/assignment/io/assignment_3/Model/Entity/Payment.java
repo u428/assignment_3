@@ -22,7 +22,7 @@ public class Payment {
     private Date time;
 
     @Column
-    private int amount;
+    private double amount;
 
     @Column(name = "invoice_id")
     private Long invoiceId;

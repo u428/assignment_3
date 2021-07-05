@@ -11,8 +11,6 @@ public interface CustomerService extends UserDetailsService {
 
     ResponseEntity getCurrentCustomer(String telNomer);
 
-    ResponseEntity sell(String telNomer);
-
     ResponseEntity payment(String telNomer);
 
     ResponseEntity buy(double summa, String telNomer);

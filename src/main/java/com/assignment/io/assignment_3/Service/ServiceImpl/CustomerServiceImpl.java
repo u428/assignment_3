@@ -2,10 +2,7 @@ package com.assignment.io.assignment_3.Service.ServiceImpl;
 
 import com.assignment.io.assignment_3.Config.Depend.ApplicationUserRole;
 import com.assignment.io.assignment_3.Config.Enams.OrderStatus;
-import com.assignment.io.assignment_3.Model.Entity.Customer;
-import com.assignment.io.assignment_3.Model.Entity.Detail;
-import com.assignment.io.assignment_3.Model.Entity.Invoice;
-import com.assignment.io.assignment_3.Model.Entity.Order;
+import com.assignment.io.assignment_3.Model.Entity.*;
 import com.assignment.io.assignment_3.Model.Entity.Role.Priviliges;
 import com.assignment.io.assignment_3.Model.Entity.Role.Role;
 import com.assignment.io.assignment_3.Model.ForLogin.CustomerSignUp;
@@ -40,6 +37,8 @@ public class CustomerServiceImpl implements CustomerService {
     private OrderRepository orderRepository;
     @Autowired
     private InvoiceRepository invoiceRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Override
     public ResponseEntity signUp(CustomerSignUp customerSignUp) {
@@ -78,17 +77,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseEntity sell(String telNomer) {
-
-
-        return null;
-    }
-
-    @Override
     public ResponseEntity payment(String telNomer) {
         Customer customer=findByPhoneNumber(Integer.parseInt(telNomer));
         Order order=orderRepository.findOrderByCustomerIdAndStatus(customer.getId(), OrderStatus.STORED);
-        order.setStatus(OrderStatus.PAYED);
+//        order.setStatus(OrderStatus.PAYED);
         Invoice invoice =new Invoice();
         invoice.setIssued(new Date());
         double summ=0;
@@ -105,8 +97,16 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ResponseEntity buy(double summa, String telNomer) {
         Customer customer = findByPhoneNumber(Integer.parseInt(telNomer));
-
-        return null;
+        Order order=orderRepository.findOrderByCustomerIdAndStatus(customer.getId(), OrderStatus.STORED);
+        Payment payment=new Payment();
+        payment.setAmount(summa);
+        payment.setInvoice(order.getInvoice());
+        payment.setTime(new Date());
+        if (order.getInvoice().getAmount()==summa){
+            order.setStatus(OrderStatus.PAYED);
+            paymentRepository.save(payment);
+        }
+        return ResponseEntity.ok("SUCCESS");
     }
 
     @Override
