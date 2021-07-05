@@ -34,8 +34,8 @@ public class Customer {
     private String password;
 
 
-    @OneToOne(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Order order;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Order> order;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)

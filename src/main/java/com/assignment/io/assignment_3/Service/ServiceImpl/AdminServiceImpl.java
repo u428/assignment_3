@@ -158,7 +158,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResponseEntity getIncome(Date start, Date end) {
-        double summ = paymentRepository.getSummAmount(start, end);
-        return ResponseEntity.ok(summ);
+//        double summ = paymentRepository.getSummAmount(start, end);
+//        return ResponseEntity.ok(summ);
+        return null;
     }
 }

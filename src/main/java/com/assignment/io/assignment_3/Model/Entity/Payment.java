@@ -1,5 +1,6 @@
 package com.assignment.io.assignment_3.Model.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -26,6 +27,7 @@ public class Payment {
     @Column(name = "invoice_id")
     private Long invoiceId;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "invoice_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Invoice invoice;

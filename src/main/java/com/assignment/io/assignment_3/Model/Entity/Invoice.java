@@ -1,5 +1,6 @@
 package com.assignment.io.assignment_3.Model.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -28,9 +29,11 @@ public class Invoice {
     @Column
     private Date due;
 
+    @JsonIgnore
     @OneToOne()
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
+
 
     @OneToMany(mappedBy = "invoice")
     private List<Payment> payment;

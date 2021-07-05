@@ -1,14 +1,15 @@
 package com.assignment.io.assignment_3.Service.ServiceImpl;
 
 import com.assignment.io.assignment_3.Config.Depend.ApplicationUserRole;
+import com.assignment.io.assignment_3.Config.Enams.OrderStatus;
 import com.assignment.io.assignment_3.Model.Entity.Customer;
+import com.assignment.io.assignment_3.Model.Entity.Detail;
+import com.assignment.io.assignment_3.Model.Entity.Invoice;
 import com.assignment.io.assignment_3.Model.Entity.Order;
 import com.assignment.io.assignment_3.Model.Entity.Role.Priviliges;
 import com.assignment.io.assignment_3.Model.Entity.Role.Role;
 import com.assignment.io.assignment_3.Model.ForLogin.CustomerSignUp;
-import com.assignment.io.assignment_3.Repository.CustomerRepository;
-import com.assignment.io.assignment_3.Repository.PriviligesRepository;
-import com.assignment.io.assignment_3.Repository.RoleRepository;
+import com.assignment.io.assignment_3.Repository.*;
 import com.assignment.io.assignment_3.Service.CustomerService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class CustomerServiceImpl implements CustomerService {
     private PriviligesRepository priviligesRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     @Override
     public ResponseEntity signUp(CustomerSignUp customerSignUp) {
@@ -43,14 +48,11 @@ public class CustomerServiceImpl implements CustomerService {
         customer=new Customer();
         BeanUtils.copyProperties(customerSignUp, customer);
         customer.setPassword(encoder.encode(customerSignUp.getPassword()));
-        Order order=new Order();
-        order.setDate(new Date());
-        customer.setOrder(order);
         Role role= new Role();
-        role.setRoleName(ApplicationUserRole.USER.name());
+        role.setRoleName(ApplicationUserRole.ADMIN.name());
         Set<Priviliges> set=new HashSet<>();
         roleRepository.save(role);
-        for (String string: ApplicationUserRole.USER.getGrantedAuthorities()){
+        for (String string: ApplicationUserRole.ADMIN.getGrantedAuthorities()){
             Priviliges priviliges=new Priviliges();
             priviliges.setName(string);
             priviliges.setRoleId(role.getId());
@@ -73,6 +75,38 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ResponseEntity getCurrentCustomer(String telNomer) {
         return ResponseEntity.ok(findByPhoneNumber(Integer.parseInt(telNomer)));
+    }
+
+    @Override
+    public ResponseEntity sell(String telNomer) {
+
+
+        return null;
+    }
+
+    @Override
+    public ResponseEntity payment(String telNomer) {
+        Customer customer=findByPhoneNumber(Integer.parseInt(telNomer));
+        Order order=orderRepository.findOrderByCustomerIdAndStatus(customer.getId(), OrderStatus.STORED);
+        order.setStatus(OrderStatus.PAYED);
+        Invoice invoice =new Invoice();
+        invoice.setIssued(new Date());
+        double summ=0;
+        for (Detail detail:order.getDetails()){
+            summ+=detail.getProduct().getPrice()*detail.getQuantity();
+        }
+        invoice.setAmount(summ);
+        invoice.setOrder(order);
+        invoice.setDue(new Date(invoice.getIssued().getTime()+3600));
+        invoiceRepository.save(invoice);
+        return ResponseEntity.ok(invoice);
+    }
+
+    @Override
+    public ResponseEntity buy(double summa, String telNomer) {
+        Customer customer = findByPhoneNumber(Integer.parseInt(telNomer));
+
+        return null;
     }
 
     @Override

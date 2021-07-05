@@ -1,17 +1,23 @@
 package com.assignment.io.assignment_3.Service.ServiceImpl;
 
+import com.assignment.io.assignment_3.Config.Enams.OrderStatus;
 import com.assignment.io.assignment_3.Model.DTO.OrderDTO;
 import com.assignment.io.assignment_3.Model.Entity.*;
 import com.assignment.io.assignment_3.Repository.*;
 import com.assignment.io.assignment_3.Service.OtherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 public class OtherServiceImpl implements OtherService {
@@ -30,6 +36,8 @@ public class OtherServiceImpl implements OtherService {
 
     @Autowired
     private DetailRepository detailRepository;
+    @Autowired
+    private Photorepository photorepository;
 
 
     @Override
@@ -77,20 +85,38 @@ public class OtherServiceImpl implements OtherService {
     }
 
     @Override
-    public ResponseEntity karzinka(OrderDTO orderDTO, String id) {
+    public ResponseEntity karzinka(OrderDTO orderDTO, String userName) {
+        Order order=orderRepository.findOrderByCustomerIdAndStatus(findByPhoneNumber(userName),OrderStatus.STORED);
+        if (order == null) {
+            order = new Order();
+            order.setDate(new Date());
+            order.setCustomerId(findByPhoneNumber(userName));
+            order.setStatus(OrderStatus.STORED);
+            orderRepository.save(order);
+        }
        Detail detail=new Detail();
-//       productRepository.findById(orderDTO.getProduct_id());
        detail.setQuantity(orderDTO.getProduct_quantity());
        detail.setProductId(orderDTO.getProduct_id());
-       detail.setOrderId(findByPhoneNumber(id));
+       detail.setOrderId(order.getId());
        detailRepository.save(detail);
        return ResponseEntity.ok(detail);
     }
 
     @Override
     public ResponseEntity getKarzinka(String telNomer) {
-        Order order=orderRepository.findById(findByPhoneNumber(telNomer)).get();
+        Order order=orderRepository.findOrderByCustomerIdAndStatus(findByPhoneNumber(telNomer),OrderStatus.STORED);
         return ResponseEntity.ok(order);
+    }
+
+    @Override
+    public ResponseEntity image(Long id) throws MalformedURLException {
+        Photo photo=photorepository.findById(id).get();
+        Path path= Paths.get(photo.getUploadPath());
+        Resource resource= new UrlResource(path.toUri());
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf(photo.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName="+resource.getFilename())
+                .body(resource);
     }
 
     private Long findByPhoneNumber(String phone){

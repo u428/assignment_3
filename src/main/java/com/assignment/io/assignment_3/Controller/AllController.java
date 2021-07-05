@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 @RestController
@@ -29,4 +30,11 @@ public class AllController {
     public ResponseEntity<Product> getProductById(@PathVariable Long id){
         return otherService.getProductById(id);
     }
+
+    @GetMapping(path = "/image/{id}")
+    public ResponseEntity image(@PathVariable Long id) throws MalformedURLException {
+        return otherService.image(id);
+    }
+
+
 }

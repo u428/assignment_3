@@ -42,6 +42,16 @@ public class CustomerController {
         return customerService.getCurrentCustomer(telNomer);
     }
 
+    @PostMapping(path = "/buy")
+    public ResponseEntity buy(@RequestParam double summa, @CurrentUser String telNomer){
+        return customerService.buy(summa, telNomer);
+    }
+
+    @GetMapping(path="/payment")
+    public ResponseEntity payment(@CurrentUser String telNomer){
+        return customerService.payment(telNomer);
+    }
+
 
 
 }

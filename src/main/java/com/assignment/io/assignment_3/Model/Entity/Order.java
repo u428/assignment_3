@@ -1,6 +1,7 @@
 package com.assignment.io.assignment_3.Model.Entity;
 
 
+import com.assignment.io.assignment_3.Config.Enams.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,16 +24,21 @@ public class Order {
     @Column
     private Date date;
 
-    @JsonIgnore
-    @OneToOne()
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @Column(name = "customer_id")
+    private Long customerId;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
+    private Customer customer;
+
     @OneToOne(mappedBy = "order")
     private Invoice invoice;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "order")
     private List<Detail> details;
 

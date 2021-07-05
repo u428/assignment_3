@@ -1,6 +1,7 @@
 package com.assignment.io.assignment_3.Model.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,12 +27,14 @@ public class Photo {
     @Column
     private String contentType;
 
+    @JsonIgnore
     @Column
     private String uploadPath;
 
     @Column(name = "product_id")
     private Long productId;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
