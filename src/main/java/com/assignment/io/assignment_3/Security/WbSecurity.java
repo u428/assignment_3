@@ -40,6 +40,8 @@ public class WbSecurity extends WebSecurityConfigurerAdapter {
 
                .antMatchers(HttpMethod.GET, "/auth/checkTelNomer")
                .permitAll()
+               .antMatchers(HttpMethod.GET, "/auth/image")
+               .permitAll()
                 .antMatchers("/admin/**").hasRole(ApplicationUserRole.ADMIN.name())
 //               .antMatchers( "/users/**").hasRole(ApplicationUserRole.USER.name())
 
@@ -47,14 +49,15 @@ public class WbSecurity extends WebSecurityConfigurerAdapter {
                .authenticated()
                .and()
 
+               .cors()
+               .and()
+
                .addFilter(getAuthenticationFilter())
                .addFilter(new AuthorizationFilter(authenticationManager()))
 
                .sessionManagement()
                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-               .and()
 
-               .cors()
        ;
 
     }
@@ -67,7 +70,7 @@ public class WbSecurity extends WebSecurityConfigurerAdapter {
     public AuthenticationFilter getAuthenticationFilter() throws Exception{
         final AuthenticationFilter filter=new AuthenticationFilter(authenticationManager());
         filter.setFilterProcessesUrl("/auth/login");
-        filter.setPostOnly(true);
+//        filter.setPostOnly(true);
         return filter;
     }
 }

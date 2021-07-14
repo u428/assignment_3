@@ -1,7 +1,9 @@
 package com.assignment.io.assignment_3.Service.ServiceImpl;
 
+import com.assignment.io.assignment_3.Config.Enams.OrderStatus;
 import com.assignment.io.assignment_3.Model.DTO.SetProductDto;
 import com.assignment.io.assignment_3.Model.Entity.Category;
+import com.assignment.io.assignment_3.Model.Entity.Order;
 import com.assignment.io.assignment_3.Model.Entity.Photo;
 import com.assignment.io.assignment_3.Model.Entity.Product;
 import com.assignment.io.assignment_3.Repository.*;
@@ -39,7 +41,7 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private PaymentRepository paymentRepository;
     @Autowired
-    private InvoiceRepository invoiceRepository;
+    private OrderRepository orderRepository;
 
     public AdminServiceImpl(@Value("java-code") String fileStorageLocation) {
         this.fileStorageLocation = fileStorageLocation;
@@ -77,7 +79,6 @@ public class AdminServiceImpl implements AdminService {
             photo.setUploadPath(String.valueOf(filePath));
             Files.copy(multipartFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             photo.setProduct(product);
-//            photorepository.save(photo);
             photoList.add(photo);
         }
         product.setPhotos(photoList);
@@ -96,7 +97,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResponseEntity allInvoices() {
-        return ResponseEntity.ok(invoiceRepository.findAll());
+        List<Order> orderList=orderRepository.findAllByStatus(OrderStatus.PAYED);
+        return ResponseEntity.ok(orderList);
     }
 
     @Override
@@ -108,8 +110,17 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ResponseEntity deleteProduct(Long id) {
+    public ResponseEntity deleteProduct(Long id) throws IOException {
         Product product=productRepository.findById(id).get();
+        for(Photo photo:product.getPhotos()){
+            Path path=Paths.get(photo.getUploadPath());
+            try {
+                Files.delete(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            photorepository.delete(photo);
+        }
         productRepository.delete(product);
         return ResponseEntity.ok("SUCCESS");
     }
@@ -136,12 +147,22 @@ public class AdminServiceImpl implements AdminService {
         photo.setFileSize(multipartFile.getSize());
         photo.setName(multipartFile.getOriginalFilename());
         photo.setContentType(multipartFile.getContentType());
-        photo.setExtention(AA.substring(AA.length()-4));
-        photorepository.save(photo);
+
+        Path path=Paths.get(photo.getUploadPath());
         String fileName = String.valueOf(photo.getId())+AA.substring(AA.length()-4, AA.length());
         Path filePath = Paths.get(fileStoragePath + "//" + fileName);
+
+        photo.setUploadPath(String.valueOf(filePath));
+        photo.setExtention(AA.substring(AA.length()-4));
+        photorepository.save(photo);
+
         try {
+            System.out.println(filePath);
+            System.out.println(path);
+
+            Files.delete(path);
             Files.copy(multipartFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
             return ResponseEntity.ok(photo);
         } catch (IOException e) {
             e.printStackTrace();
@@ -152,6 +173,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ResponseEntity deleteProductPhoto(Long id) {
         Photo photo = photorepository.findById(id).get();
+        Path path=Paths.get(photo.getUploadPath());
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         photorepository.delete(photo);
         return ResponseEntity.ok("SUCCESS");
     }

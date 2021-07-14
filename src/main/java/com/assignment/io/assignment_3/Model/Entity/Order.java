@@ -2,6 +2,7 @@ package com.assignment.io.assignment_3.Model.Entity;
 
 
 import com.assignment.io.assignment_3.Config.Enams.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,11 +23,13 @@ public class Order {
     @Temporal(TemporalType.DATE)
     @CreatedDate
     @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date date;
 
     @Column(name = "customer_id")
     private Long customerId;
 
+    @JsonIgnore
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

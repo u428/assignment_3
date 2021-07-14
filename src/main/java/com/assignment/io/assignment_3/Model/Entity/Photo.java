@@ -24,6 +24,7 @@ public class Photo {
     @Column
     private Long fileSize;
 
+    @JsonIgnore
     @Column
     private String contentType;
 
@@ -31,6 +32,7 @@ public class Photo {
     @Column
     private String uploadPath;
 
+    @JsonIgnore
     @Column(name = "product_id")
     private Long productId;
 

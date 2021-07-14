@@ -1,7 +1,6 @@
 package com.assignment.io.assignment_3.Config.Depend;
 
 import com.google.common.collect.Sets;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ public enum ApplicationUserRole {
 
     public Set<String> getGrantedAuthorities() {
         Set<String> permissions = getPermissions().stream()
-                .map(permission ->permission.getPermission())
+                .map(ApplicationUserPermission::getPermission)
                 .collect(Collectors.toSet());
         return permissions;
     }

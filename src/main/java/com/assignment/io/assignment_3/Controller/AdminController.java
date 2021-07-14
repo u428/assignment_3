@@ -1,6 +1,7 @@
 package com.assignment.io.assignment_3.Controller;
 
 import com.assignment.io.assignment_3.Model.DTO.SetProductDto;
+import com.assignment.io.assignment_3.Security.CurrentUser;
 import com.assignment.io.assignment_3.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Date;
+
 
 @RestController
 @RequestMapping(path = "/admin")
@@ -39,8 +41,8 @@ public class AdminController {
         return adminService.putProduct(id, setProductDto);
     }
 
-    @DeleteMapping(path = "/deleteProduct/{id}")
-    public ResponseEntity deleteProduct(@PathVariable Long id){
+    @DeleteMapping(path = "/deleteProduct")
+    public ResponseEntity deleteProduct(@RequestParam Long id) throws IOException {
         return adminService.deleteProduct(id);
     }
 
@@ -49,8 +51,8 @@ public class AdminController {
         return adminService.changeProductPhoto(productPhotoId, multipartFile);
     }
 
-    @DeleteMapping(path = "/deleteProductPhoto/{id}")
-    public ResponseEntity deleteProductPhoto(@PathVariable Long id){
+    @DeleteMapping(path = "/deleteProductPhoto")
+    public ResponseEntity deleteProductPhoto(@RequestParam Long id){
         return adminService.deleteProductPhoto(id);
     }
 
@@ -59,13 +61,13 @@ public class AdminController {
         return adminService.addCategory(categoryName);
     }
 
-    @PutMapping(path = "/putcategory/{id}")
-    public ResponseEntity putcategory(@PathVariable Long id, @RequestParam String categoryName){
+    @PutMapping(path = "/putcategory")
+    public ResponseEntity putcategory(@RequestParam Long id, @RequestParam String categoryName){
         return adminService.putcategory(id, categoryName);
     }
 
-    @DeleteMapping(path = "/deleteCategory/{id}")
-    public ResponseEntity deleteCategory(@PathVariable Long id){
+    @DeleteMapping(path = "/deleteCategory")
+    public ResponseEntity deleteCategory(@RequestParam Long id){
         return adminService.deleteCategory(id);
     }
 

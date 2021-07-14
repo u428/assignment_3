@@ -1,9 +1,11 @@
 package com.assignment.io.assignment_3;
 
+import com.assignment.io.assignment_3.Security.SecurityConstants;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
 public class Assignment3Application {
@@ -17,7 +19,7 @@ public class Assignment3Application {
 	public BCryptPasswordEncoder bCryptPasswordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	private static void addAdmin(){
 		System.out.println("boshlanishi spring ning");
 	}

@@ -14,4 +14,12 @@ public interface CustomerService extends UserDetailsService {
     ResponseEntity payment(String telNomer);
 
     ResponseEntity buy(double summa, String telNomer);
+
+    ResponseEntity getRole(String telnomer);
+
+    ResponseEntity deleteDetails(Long id);
+
+    ResponseEntity updateDetails(Long id, short quantity, String telNomer);
+
+    ResponseEntity getAllInvoices(String telNomer);
 }

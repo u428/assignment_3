@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,8 @@ public class CustomerServiceImpl implements CustomerService {
     private InvoiceRepository invoiceRepository;
     @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
+    private DetailRepository detailRepository;
 
     @Override
     public ResponseEntity signUp(CustomerSignUp customerSignUp) {
@@ -48,10 +51,10 @@ public class CustomerServiceImpl implements CustomerService {
         BeanUtils.copyProperties(customerSignUp, customer);
         customer.setPassword(encoder.encode(customerSignUp.getPassword()));
         Role role= new Role();
-        role.setRoleName(ApplicationUserRole.ADMIN.name());
+        role.setRoleName(ApplicationUserRole.USER.name());
         Set<Priviliges> set=new HashSet<>();
         roleRepository.save(role);
-        for (String string: ApplicationUserRole.ADMIN.getGrantedAuthorities()){
+        for (String string: ApplicationUserRole.USER.getGrantedAuthorities()){
             Priviliges priviliges=new Priviliges();
             priviliges.setName(string);
             priviliges.setRoleId(role.getId());
@@ -81,15 +84,27 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer=findByPhoneNumber(Integer.parseInt(telNomer));
         Order order=orderRepository.findOrderByCustomerIdAndStatus(customer.getId(), OrderStatus.STORED);
 //        order.setStatus(OrderStatus.PAYED);
-        Invoice invoice =new Invoice();
-        invoice.setIssued(new Date());
-        double summ=0;
-        for (Detail detail:order.getDetails()){
-            summ+=detail.getProduct().getPrice()*detail.getQuantity();
+        Invoice invoice;
+        if(order.getInvoice()==null){
+            invoice=new Invoice();
+            invoice.setIssued(new Date());
+            double summ=0;
+            for (Detail detail:order.getDetails()){
+                summ+=detail.getProduct().getPrice()*detail.getQuantity();
+            }
+            invoice.setAmount(summ);
+            invoice.setOrder(order);
+        }else{
+            invoice=order.getInvoice();
+            double summ=0;
+            for (Detail detail:order.getDetails()){
+                summ+=detail.getProduct().getPrice()*detail.getQuantity();
+            }
+            invoice.setAmount(summ);
         }
-        invoice.setAmount(summ);
-        invoice.setOrder(order);
-        invoice.setDue(new Date(invoice.getIssued().getTime()+3600));
+
+//        invoice.setDue(new Date(invoice.getIssued().getTime()+15000));
+        invoice.setDue(new Date(new Date().getTime()+30000));
         invoiceRepository.save(invoice);
         return ResponseEntity.ok(invoice);
     }
@@ -102,11 +117,44 @@ public class CustomerServiceImpl implements CustomerService {
         payment.setAmount(summa);
         payment.setInvoice(order.getInvoice());
         payment.setTime(new Date());
+        System.out.println(order.getInvoice().getAmount());
+        System.out.println(summa);
         if (order.getInvoice().getAmount()==summa){
             order.setStatus(OrderStatus.PAYED);
+            payment.setInvoiceId(order.getInvoice().getId());
             paymentRepository.save(payment);
         }
+        return ResponseEntity.ok(payment);
+    }
+
+    @Override
+    public ResponseEntity getRole(String telnomer) {
+        return ResponseEntity.ok(findByPhoneNumber(Integer.parseInt(telnomer)).getRole().getRoleName());
+    }
+
+    @Override
+    public ResponseEntity deleteDetails(Long id) {
+//        Detail detail=detailRepository.findById(id).get();
+        detailRepository.deleteById(id);
         return ResponseEntity.ok("SUCCESS");
+    }
+
+    @Override
+    public ResponseEntity updateDetails(Long id, short quantity, String telNomer) {
+        Customer customer = findByPhoneNumber(Integer.parseInt(telNomer));
+        Order order=orderRepository.findOrderByCustomerIdAndStatus(customer.getId(), OrderStatus.STORED);
+        Detail detail=detailRepository.findById(id).get();
+        detail.setQuantity(quantity);
+        detailRepository.save(detail);
+
+        return ResponseEntity.ok(detail);
+    }
+
+    @Override
+    public ResponseEntity getAllInvoices(String telNomer) {
+        Customer customer=findByPhoneNumber(Integer.parseInt(telNomer));
+        List<Order> orderList=orderRepository.findAllByCustomerIdAndStatus(customer.getId(), OrderStatus.PAYED);
+        return ResponseEntity.ok(orderList);
     }
 
     @Override

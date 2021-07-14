@@ -9,17 +9,19 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public interface OtherService {
-    ResponseEntity<List<Product>> getAllProducts();
+    ResponseEntity getAllProducts(int page, int limit);
 
     ResponseEntity<Product> getProductById(Long id);
 
     ResponseEntity customOrder(List<OrderDTO> orderDTOList, Customer customer);
 
-    ResponseEntity sortProductByCategory(Long id);
+    ResponseEntity sortProductByCategory(Long id, int limit, int page);
 
     ResponseEntity karzinka(OrderDTO orderDTO, String userName);
 
     ResponseEntity getKarzinka(String telNomer);
 
     ResponseEntity image(Long id) throws MalformedURLException;
+
+    ResponseEntity getAllcategory();
 }

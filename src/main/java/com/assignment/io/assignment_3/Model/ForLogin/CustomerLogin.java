@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class CustomerLogin {
 
-    public Integer photo;
+    public Integer phone;
     public String password;
 
 }

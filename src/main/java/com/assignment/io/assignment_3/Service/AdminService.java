@@ -19,7 +19,7 @@ public interface AdminService {
 
     ResponseEntity putProduct(Long id, SetProductDto setProductDto);
 
-    ResponseEntity deleteProduct(Long id);
+    ResponseEntity deleteProduct(Long id) throws IOException;
 
     ResponseEntity putcategory(Long id, String categoryName);
 

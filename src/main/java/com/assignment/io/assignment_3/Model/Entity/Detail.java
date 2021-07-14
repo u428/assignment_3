@@ -1,6 +1,7 @@
 package com.assignment.io.assignment_3.Model.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Detail {
     @Column(name = "order_id")
     private Long orderId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Order order;

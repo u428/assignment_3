@@ -33,10 +33,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public org.springframework.security.core.Authentication attemptAuthentication(HttpServletRequest request,
                                                                                   HttpServletResponse response) throws AuthenticationException {
         try {
+            System.out.println(request);
+            System.out.println(response);
             CustomerLogin creds=new ObjectMapper().readValue(request.getInputStream(), CustomerLogin.class);
+            System.out.println(creds);
 
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                creds.getPhoto(),
+                creds.getPhone(),
                 creds.getPassword(),
                 new ArrayList<SimpleGrantedAuthority>())
             );

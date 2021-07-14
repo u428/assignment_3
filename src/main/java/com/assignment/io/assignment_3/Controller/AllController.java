@@ -1,6 +1,8 @@
 package com.assignment.io.assignment_3.Controller;
 
 import com.assignment.io.assignment_3.Model.Entity.Product;
+import com.assignment.io.assignment_3.Security.CurrentUser;
+import com.assignment.io.assignment_3.Service.CustomerService;
 import com.assignment.io.assignment_3.Service.OtherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,30 +18,49 @@ public class AllController {
 
     @Autowired
     private OtherService otherService;
+    @Autowired
+    private CustomerService customerService;
 
-    @PreAuthorize("hasAuthority('read')")
-    @GetMapping(path = "/sortProductByCategory/{id}")
-    public ResponseEntity sortProductByCategory(@PathVariable Long id){
-        return otherService.sortProductByCategory(id);
+    @GetMapping(path = "/sortProductByCategory")
+    public ResponseEntity sortProductByCategory(@RequestParam Long id, @RequestParam int limit, @RequestParam int page){
+        return otherService.sortProductByCategory(id, limit, page);
     }
 
-    @PreAuthorize("hasAuthority('read')")
     @GetMapping(path = "/getProducts")
-    public ResponseEntity<List<Product>> getAllProduct(){
-        return otherService.getAllProducts();
+    public ResponseEntity getAllProduct(@RequestParam int limit, @RequestParam int page){
+        return otherService.getAllProducts(page, limit);
     }
 
     @PreAuthorize("hasAuthority('read')")
-    @GetMapping(path = "/getproduct/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id){
+    @GetMapping(path = "/getproduct")
+    public ResponseEntity<Product> getProductById(@RequestParam Long id){
         return otherService.getProductById(id);
     }
 
+
+//    @GetMapping(path = "/image")
+//    public ResponseEntity image(@RequestParam Long id) throws MalformedURLException {
+//        return otherService.image(id);
+//    }
+
     @PreAuthorize("hasAuthority('read')")
-    @GetMapping(path = "/image/{id}")
-    public ResponseEntity image(@PathVariable Long id) throws MalformedURLException {
-        return otherService.image(id);
+    @GetMapping(path = "/getAllCategory")
+    public ResponseEntity getAllCategpry(){
+        return otherService.getAllcategory();
     }
+
+    @PreAuthorize("hasAuthority('read')")
+    @GetMapping(path = "/getCurrentCustomer")
+    public ResponseEntity getCurrentCustomer(@CurrentUser String telNomer){
+        return customerService.getCurrentCustomer(telNomer);
+    }
+
+    @PreAuthorize("hasAuthority('read')")
+    @GetMapping(path="/getRole")
+    public ResponseEntity getRole(@CurrentUser String telnomer){
+        return customerService.getRole(telnomer);
+    }
+
 
 
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping(path = "/customer")
 @PreAuthorize("hasRole('ROLE_USER')")
@@ -32,14 +33,10 @@ public class CustomerController {
     public ResponseEntity addKarzinka(@RequestBody OrderDTO orderDTO, @CurrentUser String userName){
         return otherService.karzinka(orderDTO, userName);
     }
+
     @GetMapping(path = "/getKarzinka")
     public ResponseEntity getKarzinka(@CurrentUser String telNomer){
         return otherService.getKarzinka(telNomer);
-    }
-
-    @GetMapping(path = "/getCurrentCustomer")
-    public ResponseEntity getCurrentCustomer(@CurrentUser String telNomer){
-        return customerService.getCurrentCustomer(telNomer);
     }
 
     @PostMapping(path = "/buy")
@@ -52,6 +49,19 @@ public class CustomerController {
         return customerService.payment(telNomer);
     }
 
+    @DeleteMapping(path ="/deleteDetails")
+    public ResponseEntity deleteDetails(@RequestParam Long id){
+        return customerService.deleteDetails(id);
+    }
 
+    @PutMapping(path = "/updateDetails")
+    public ResponseEntity updateDetails(@RequestParam Long id, @RequestParam short quantity, @CurrentUser String telNomer){
+        return customerService.updateDetails(id, quantity, telNomer);
+    }
+
+    @GetMapping(path = "/getAllInvoices")
+    public ResponseEntity getAllInvoices(@CurrentUser String telNomer){
+        return customerService.getAllInvoices(telNomer);
+    }
 
 }

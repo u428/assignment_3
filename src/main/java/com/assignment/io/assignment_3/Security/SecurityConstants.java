@@ -1,7 +1,11 @@
 package com.assignment.io.assignment_3.Security;
 
 
+import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
 
 public class SecurityConstants {
 
@@ -11,5 +15,5 @@ public class SecurityConstants {
     public static final String SIGN_UP_URL="/auth/signUp";
 
 //    @Value("${token.secret}")
-    public static String TOKEN_SECRET="QurbanovUlugbek428@gmail.com";
+    public static String TOKEN_SECRET="qurbanovulugbek428@gmail.com";
 }
