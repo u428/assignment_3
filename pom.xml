@@ -15,6 +15,10 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<frontend-src-dir>src/main//resources/static/static</frontend-src-dir>
+		<node.version>v12.21.0</node.version>
+		<yarn.version>v1.16.0</yarn.version>
+		<frontend-maven-plugin.version>1.7.6</frontend-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -85,6 +89,15 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+<!--			react plugins for spring boot-->
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>${frontend-maven-plugin.version}</version>
+			</plugin>
+
+
 		</plugins>
 	</build>
 
