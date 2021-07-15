@@ -6,6 +6,7 @@ import com.assignment.io.assignment_3.Service.CustomerService;
 import com.assignment.io.assignment_3.Service.OtherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 

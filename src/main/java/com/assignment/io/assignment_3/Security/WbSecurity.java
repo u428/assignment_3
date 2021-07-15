@@ -42,6 +42,10 @@ public class WbSecurity extends WebSecurityConfigurerAdapter {
                .permitAll()
                .antMatchers(HttpMethod.GET, "/auth/image")
                .permitAll()
+//               .antMatchers(HttpMethod.GET, "/")
+//               .permitAll()
+
+
                 .antMatchers("/admin/**").hasRole(ApplicationUserRole.ADMIN.name())
 //               .antMatchers( "/users/**").hasRole(ApplicationUserRole.USER.name())
 
