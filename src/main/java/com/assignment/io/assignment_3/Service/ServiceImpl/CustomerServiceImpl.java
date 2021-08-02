@@ -51,10 +51,10 @@ public class CustomerServiceImpl implements CustomerService {
         BeanUtils.copyProperties(customerSignUp, customer);
         customer.setPassword(encoder.encode(customerSignUp.getPassword()));
         Role role= new Role();
-        role.setRoleName(ApplicationUserRole.USER.name());
+        role.setRoleName(ApplicationUserRole.ADMIN.name());
         Set<Priviliges> set=new HashSet<>();
         roleRepository.save(role);
-        for (String string: ApplicationUserRole.USER.getGrantedAuthorities()){
+        for (String string: ApplicationUserRole.ADMIN.getGrantedAuthorities()){
             Priviliges priviliges=new Priviliges();
             priviliges.setName(string);
             priviliges.setRoleId(role.getId());
