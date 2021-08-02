@@ -29,6 +29,11 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return request.getServletPath().equals("/") || request.getServletPath().equals("/favicon.ico");
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
@@ -36,8 +41,12 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         String header =request.getHeader(SecurityConstants.HEADER_STRING);
 
 //        System.out.println(request.getUserPrincipal().getName());
+        System.out.println(request.getServletPath());
 
         if (header == null || !header.startsWith(SecurityConstants.TOKEN_PREFIX)){
+            if (request.getServletPath().equals("/") || request.getServletPath().equals("/favicon.ico")){
+                return ;
+            }
             chain.doFilter(request, response);
             return;
         }
