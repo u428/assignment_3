@@ -89,13 +89,20 @@
 					</excludes>
 				</configuration>
 			</plugin>
-
-<!--			react plugins for spring boot-->
 			<plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<version>${frontend-maven-plugin.version}</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
 			</plugin>
+<!--			react plugins for spring boot-->
+<!--			<plugin>-->
+<!--				<groupId>com.github.eirslett</groupId>-->
+<!--				<artifactId>frontend-maven-plugin</artifactId>-->
+<!--				<version>${frontend-maven-plugin.version}</version>-->
+<!--			</plugin>-->
 
 
 		</plugins>

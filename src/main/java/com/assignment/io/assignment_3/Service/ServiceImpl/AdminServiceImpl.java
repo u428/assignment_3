@@ -151,7 +151,7 @@ public class AdminServiceImpl implements AdminService {
         Path path=Paths.get(photo.getUploadPath());
         String fileName = String.valueOf(photo.getId())+AA.substring(AA.length()-4, AA.length());
         Path filePath = Paths.get(fileStoragePath + "//" + fileName);
-
+        System.out.println(filePath);
         photo.setUploadPath(String.valueOf(filePath));
         photo.setExtention(AA.substring(AA.length()-4));
         photorepository.save(photo);
